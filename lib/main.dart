@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'weather_page.dart';
 
 void main() {
-  runApp(WeatherApp());
+  runApp(const WeatherApp());
 }
 
 class WeatherApp extends StatelessWidget {
@@ -11,7 +11,7 @@ class WeatherApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: HomePage());
+    return const MaterialApp(home: HomePage());
   }
 }
 
@@ -21,24 +21,26 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Center(child: Text('Weather App'))),
+      appBar: AppBar(title: const Center(child: Text('Weather App'))),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.cloud, size: 80, color: Colors.blue),
-            SizedBox(height: 30),
-            Text('welcome to the weather App', style: TextStyle(fontSize: 24)),
-            SizedBox(height: 20),
+            const Icon(Icons.cloud, size: 80, color: Colors.blue),
+            const SizedBox(height: 30),
+            const Text(
+              'Welcome to the Weather App',
+              style: TextStyle(fontSize: 24),
+            ),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                print('button pressed');
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => WeatherPage()),
+                  MaterialPageRoute(builder: (context) => const WeatherPage()),
                 );
               },
-              child: Text('Check my Weather'),
+              child: const Text('Check my Weather'),
             ),
           ],
         ),

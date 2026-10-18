@@ -16,7 +16,6 @@ class WeatherPage extends StatefulWidget {
 
 class _WeatherPageState extends State<WeatherPage> {
   bool isLoading = true;
-
   String cityName = '';
   double temperature = 0;
   String description = '';
@@ -29,7 +28,7 @@ class _WeatherPageState extends State<WeatherPage> {
   }
 
   Future<Position> getLocation() async {
-    final LocationSettings locationSettings = LocationSettings(
+    const locationSettings = LocationSettings(
       accuracy: LocationAccuracy.low,
       distanceFilter: 100,
     );
@@ -40,22 +39,24 @@ class _WeatherPageState extends State<WeatherPage> {
     position ??= await Geolocator.getCurrentPosition(
       locationSettings: locationSettings,
     );
-    print(position);
+
     return position;
   }
 
-  void loadWeather() async {
-    Position position = await getLocation();
+  Future<void> loadWeather() async {
+    final position = await getLocation();
 
-    http.Response response = await http.get(
+    final response = await http.get(
       Uri.parse(
-        'https://api.openweathermap.org/data/2.5/weather?lat=${position.latitude}&lon=${position.longitude}&appid=$apiKey&units=imperial',
+        'https://api.openweathermap.org/data/2.5/weather'
+        '?lat=${position.latitude}'
+        '&lon=${position.longitude}'
+        '&appid=$apiKey'
+        '&units=imperial',
       ),
     );
-    print(response.statusCode);
 
-    String weatherData = response.body;
-    var decodedData = jsonDecode(weatherData);
+    final decodedData = jsonDecode(response.body);
 
     setState(() {
       cityName = decodedData['name'];
@@ -69,31 +70,35 @@ class _WeatherPageState extends State<WeatherPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Center(child: Text('Current Weather'))),
+      appBar: AppBar(title: const Center(child: Text('Current Weather'))),
       body: isLoading
-          ? SpinKitDualRing(color: Colors.blue, size: 60)
+          ? const SpinKitDualRing(color: Colors.blue, size: 60)
           : Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.wb_cloudy, size: 80, color: Colors.lightBlue),
-                  SizedBox(height: 20),
-                  Text(cityName, style: TextStyle(fontSize: 20)),
-                  SizedBox(height: 20),
+                  const Icon(
+                    Icons.wb_cloudy,
+                    size: 80,
+                    color: Colors.lightBlue,
+                  ),
+                  const SizedBox(height: 20),
+                  Text(cityName, style: const TextStyle(fontSize: 20)),
+                  const SizedBox(height: 20),
                   Text(
                     '${temperature.round()}°F',
-                    style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                      fontSize: 48,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  Text(description, style: TextStyle(fontSize: 20)),
-                  SizedBox(height: 20),
+                  Text(description, style: const TextStyle(fontSize: 20)),
+                  const SizedBox(height: 20),
                   Text('Humidity: $humidity%'),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: () {
-                      print('back button pressed');
-                      Navigator.pop(context);
-                    },
-                    child: Text('Back to Home'),
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Back to Home'),
                   ),
                 ],
               ),
